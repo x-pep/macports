@@ -2,6 +2,5 @@
 
 Add this to /opt/local/etc/macports/sources.conf:
 
-    https://github.com/x-pep/macports-core
-
+    https://software.pep.foundation/macports-pep.tar.gz
 
