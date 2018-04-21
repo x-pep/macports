@@ -1,0 +1,40 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+#     vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+
+name                libpep-etpan
+version             1.6
+categories          mail
+platforms           darwin
+license             GPL-2+
+maintainers         x-pep cluck
+description         pEp MIME parser
+long_description    MIME parser for pretty Easy privacy (fork)
+homepage            https://pep.software/
+
+master_sites        https://github.com/fdik/libetpan/archive/
+
+distfiles           cc4c5c5e3eb3d294fc58710d10821de4748b4df2.tar.gz
+
+checksums           rmd160 eca245f75ad951e7f95dad995d683286a0772fca \
+                    sha256 b76e0e2b53934bf67d1bb62c320c501d07f68e088120b191fae1fcb7a267dc17
+
+extract.suffix      .tar.gz
+extract.post_args   | tar --strip-components 1 -xf -
+worksrcdir          .
+
+depends_build       port:automake \
+                    port:autoconf \
+                    port:libtool
+
+depends_lib         port:libiconv
+
+configure.cmd       ${worksrcdir}/autogen.sh
+
+configure.pre_args  --prefix=${prefix}/pep \
+                    --bindir=${prefix}/bin --sbindir=${prefix}/sbin
+configure.args      --program-prefix=libpep- \
+                    --datarootdir=${prefix}/pep/share
+
+destroot.violate_mtree yes

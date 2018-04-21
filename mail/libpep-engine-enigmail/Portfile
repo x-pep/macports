@@ -1,0 +1,69 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+#     vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                libpep-engine-enigmail
+version             1.0.101
+categories          mail
+platforms           darwin
+license             GPL-2+
+maintainers         x-pep cluck
+description         pEp Engine for pEp JSON Mini Adapter for Enigmail
+long_description    pEp Engine for pEp JSON Mini Adapter for Enigmail
+homepage            https://pep.software/
+
+master_sites        https://pep.foundation/dev/repos/pEpEngine/archive/
+
+distfiles           3c5db90b50e8f1639d22b51b6d45a00b185835fc.tar.gz
+
+checksums           rmd160 8309be7d1c9592b0d3ee0c107380a8c5e2809789 \
+                    sha256 66728d7c08c49d62296e09c274e69ef62a85e09c01beb9653510a2024a9c4177
+
+extract.suffix      .tar.gz
+extract.post_args   | tar --strip-components 1 -xf -
+worksrcdir          .
+
+depends_build       port:gnupg2 \
+                    port:gpgme \
+                    port:libiconv \
+                    port:asn1c \
+                    port:libpep-etpan \
+                    port:py-yml2 \
+                    port:py${python.version}-setuptools \
+                    port:py${python.version}-lxml \
+                    port:libxml2
+
+depends_lib         port:libiconv
+
+use_configure       no
+
+set yml2proc_cmd    ${frameworks_dir}/Python.framework/Versions/${python.branch}/bin/yml2proc
+set yml2_path       ${frameworks_dir}/Python.framework/Versions/${python.branch}/lib/python${python.branch}/site-packages/yml2
+
+build.type          default
+build.cmd           make
+build.target        all
+build.target-append db
+build.args          PREFIX=${prefix} \"SYSTEM_DB=${prefix}/share/pEp/system.db\" \
+					\"YML2_PATH=${yml2_path}\" \
+					\"YML2_PROC=LC_ALL=C '${yml2proc_cmd}'" \
+					LIBGPGME=libgpgme.11.dylib GPG_CMD=gpg \
+					ASN1C=${prefix}/bin/asn1c \
+					\"ETPAN_LIB=-L${prefix}/pep/lib\" \"ETPAN_INC=-I${prefix}/pep/include\"
+
+pre-destroot       {
+     system "/usr/bin/install_name_tool -id \
+               '${prefix}/lib/libpEpEngine.dylib' \
+               '${worksrcpath}/src/libpEpEngine.dylib'"
+	xinstall -d ${destroot}${prefix}/share/pEp
+	xinstall -m 0644 ${worksrcpath}/db/system.db ${destroot}${prefix}/share/pEp/system.db
+}
+
+destroot.cmd        make
+destroot.target     install
+destroot.pre_args   ${destroot.target}
+destroot.args       PREFIX=${destroot}${prefix}
+destroot.post_args  ""
+
