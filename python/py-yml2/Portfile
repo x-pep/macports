@@ -5,7 +5,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-yml2
-version             5.5
+version             2.5.10
 categories          python
 categories-append   devel
 platforms           darwin
@@ -15,12 +15,12 @@ description         vb's yml2 used for pEp
 long_description    Volker Birks yml2 tool to build pretty Easy privacy
 homepage            https://fdik.org/yml/toolchain
 
-master_sites        https://github.com/x-pep/yml2/archive/
+master_sites        https://pep.foundation/dev/repos/yml2/archive/
 
-distfiles           f8b8a5d97a2a12d785a60bcdcefce2ac8c6f9127.tar.gz
+distfiles           c48f0d1d29ac.tar.gz
 
-checksums           rmd160 1c7cb850345086b131be0c5e715a342ef994a177 \
-                    sha256 c45a7a93dcfd9120e5fa36afe9d9b42f5f2784beed36b705f37adf622d2b851a
+checksums           rmd160 d88bad394d4deb23d79e2baf08c7e68a5cc6165a \
+                    sha256 374f2a156a8bfda79323882619909caba102c13c16e8dd294b2296ced682ce9c
 
 python.versions     27
 
