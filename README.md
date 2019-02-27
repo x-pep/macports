@@ -14,6 +14,15 @@ And add this line on top of the other source lines:
 
     https://software.pep.foundation/macports-pep.tar.gz
 
+and if you want to hack the Portfiles locally, use a file:// URL;
+using three slashes (file:///) for absolute paths:
+
+    file://<path-to-checkout>
+
+### Update
+
+    sudo port selfupdate
+
 ### Installation
 
     sudo port install pep-adapter-enigmail
