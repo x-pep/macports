@@ -5,7 +5,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                pep-adapter-enigmail
-version             1.0.101
+version             1.0.102
 categories          mail
 platforms           darwin
 license             GPL-2+
@@ -16,10 +16,10 @@ homepage            https://pep.software/
 
 master_sites        https://pep.foundation/dev/repos/pEpJSONServerAdapter/archive
 
-distfiles           69eccc3967269745297c13706b8d946f1c4df5b7.tar.gz
+distfiles           e10d96f5dcc8.tar.bz2
 
-checksums           rmd160 5c125443970f26c75e4bb51196f165693e981d9a \
-                    sha256 2cf94ca3e661d9ee4479ef26bfaf6555870a7b211859e6746091fe78bbec6573
+checksums           rmd160 32eb0a67136c34b85d1d287470fd85f562b2cbae \
+                    sha256 59adbba732f1a6bee22a9ce9c744327cdec7f1db194ea08f7b4c8e9b4bd74c47
 
 extract.suffix      .tar.gz
 extract.post_args   | tar --strip-components 1 -xf -

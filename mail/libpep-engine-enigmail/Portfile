@@ -16,10 +16,10 @@ homepage            https://pep.software/
 
 master_sites        https://pep.foundation/dev/repos/pEpEngine/archive/
 
-distfiles           3c5db90b50e8f1639d22b51b6d45a00b185835fc.tar.gz
+distfiles           f344cad791f26d1c7544a219bf31e94079accbee.tar.gz
 
-checksums           rmd160 8309be7d1c9592b0d3ee0c107380a8c5e2809789 \
-                    sha256 66728d7c08c49d62296e09c274e69ef62a85e09c01beb9653510a2024a9c4177
+checksums           rmd160 ac8568fc9621a64392733a14776f90315520d772 \
+                    sha256 4dc2cd51565a5856643866c60387802a96764bde21a68618f8ef10be7aeaadba
 
 extract.suffix      .tar.gz
 extract.post_args   | tar --strip-components 1 -xf -
@@ -48,7 +48,7 @@ build.target        all
 build.target-append db
 build.args          PREFIX=${prefix} \"SYSTEM_DB=${prefix}/share/pEp/system.db\" \
 					\"YML2_PATH=${yml2_path}\" \
-					\"YML2_PROC=LC_ALL=C '${yml2proc_cmd}'" \
+					\"YML2_PROC=LC_ALL=en_US.UTF-8 '${yml2proc_cmd}'" \
 					LIBGPGME=libgpgme.11.dylib GPG_CMD=gpg \
 					ASN1C=${prefix}/bin/asn1c \
 					\"ETPAN_LIB=-L${prefix}/pep/lib\" \"ETPAN_INC=-I${prefix}/pep/include\"

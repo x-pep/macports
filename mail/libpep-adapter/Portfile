@@ -1,0 +1,56 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+#     vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+
+name                libpep-adapter
+version             1.0.102
+categories          mail
+platforms           darwin
+license             GPL-2+
+maintainers         x-pep cluck
+description         pEp Adapter Commons Library
+long_description    pEp Adapter Commons Library
+homepage            https://pep.software/
+
+master_sites        https://pep.foundation/dev/repos/libpEpAdapter/archive/
+
+distfiles           0f0ef635bff9.tar.bz2
+
+checksums           rmd160 c906a74e0aa2d70e99cc3ced534623673e55c0d7 \
+                    sha256 44f941e12fd6ffe15404c86a25caf8883a3e48fa3827b21846d42fd33204bdb7
+
+extract.suffix      .tar.gz
+extract.post_args   | tar --strip-components 1 -xf -
+worksrcdir          .
+
+depends_build       port:libpep-engine-enigmail
+
+#                     port:autoconf \
+#                     port:libtool
+
+# depends_lib         port:libiconv
+
+use_configure       no
+#
+# configure.cmd       ${worksrcdir}/autogen.sh
+# configure.pre_args  --prefix=${prefix}/pep \
+#                     --bindir=${prefix}/bin --sbindir=${prefix}/sbin
+# configure.args      --program-prefix=libpep- \
+#                     --datarootdir=${prefix}/pep/share
+
+build.type          default
+build.cmd           make
+build.target        all
+build.args          PREFIX=${prefix} \
+					\"ENGINE_LIB=-L${prefix}/lib\" \"ENGINE_INC=-I${prefix}/include\"
+
+destroot.cmd        make
+destroot.target     install
+destroot.pre_args   ${destroot.target}
+destroot.args       PREFIX=${destroot}${prefix} \
+                         \"ENGINE_LIB=-L${prefix}/lib\" \"ENGINE_INC=-I${prefix}/include\"
+
+destroot.post_args  ""
+
+# destroot.violate_mtree yes

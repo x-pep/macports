@@ -5,7 +5,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-yml2
-version             2.5.10
+version             5.11
 categories          python
 categories-append   devel
 platforms           darwin
@@ -17,10 +17,10 @@ homepage            https://fdik.org/yml/toolchain
 
 master_sites        https://pep.foundation/dev/repos/yml2/archive/
 
-distfiles           c48f0d1d29ac.tar.gz
+distfiles           bd6f5809cc81.tar.bz2
 
-checksums           rmd160 d88bad394d4deb23d79e2baf08c7e68a5cc6165a \
-                    sha256 374f2a156a8bfda79323882619909caba102c13c16e8dd294b2296ced682ce9c
+checksums           rmd160 9ead9af680a1e2283185f52950ac2d8b3e1f057a \
+                    sha256 6250bba9465acf2220f06c07836496d2596a13b7493debee555713e6b05725c2
 
 python.versions     27
 

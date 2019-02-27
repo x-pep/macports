@@ -4,7 +4,7 @@
 PortSystem          1.0
 
 name                libpep-etpan
-version             1.6
+version             1.6.1
 categories          mail
 platforms           darwin
 license             GPL-2+
@@ -15,10 +15,10 @@ homepage            https://pep.software/
 
 master_sites        https://github.com/fdik/libetpan/archive/
 
-distfiles           cc4c5c5e3eb3d294fc58710d10821de4748b4df2.tar.gz
+distfiles           af2aad552dd0ecc6a943f78e5c77dc03ebbc0028.tar.gz
 
-checksums           rmd160 eca245f75ad951e7f95dad995d683286a0772fca \
-                    sha256 b76e0e2b53934bf67d1bb62c320c501d07f68e088120b191fae1fcb7a267dc17
+checksums           rmd160 b4b3b1b06db3bf33e69895595b64f81632b3effc \
+                    sha256 8bf56f8ca41518b7db5d80fca358e48ea889981255369beb222167aa1ab200a0
 
 extract.suffix      .tar.gz
 extract.post_args   | tar --strip-components 1 -xf -
