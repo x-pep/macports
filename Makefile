@@ -8,7 +8,7 @@ all: $(SLUG).tar.gz
 .PHONY: $(SLUG).tar.gz
 
 $(SLUG).tar.gz:
-	git diff-index --quiet HEAD -- >/dev/null 2>&1
+	git diff-index --quiet HEAD -- >/dev/null 2>&1 || $(error Git: checkout is not clean)
 	-@rm -f $(SLUG).tar $(SLUG).tar.gz
 	mkdir -p ports
 	$(PORT_PREFIX)/bin/portindex -p darwin_11_i386 -o ports/PortIndex_darwin_11_i386
