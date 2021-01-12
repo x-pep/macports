@@ -27,6 +27,9 @@ all: ../$(SLUG).tar.gz
 	gzip -9 ../$(SLUG).tar
 	$(CHECK_CLEAN)
 
+upload: ../$(SLUG).tar.gz
+	scp "$^" software:"/var/www/html/$(SLUG).tar.gz"
+
 clean:
 	rm -rf ../ports
 	rm -f ../$(SLUG).tar ../$(SLUG).tar.gz PortIndex PortIndex.quick

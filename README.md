@@ -25,25 +25,26 @@ using three slashes (file:///) for absolute paths:
 
 ### Installation
 
-    sudo port install pep-adapter-enigmail
+    sudo port install pep-adapter-thunderbird
 
 ### Usage
 
 After installation, the pEp JSON Server should be available:
 
- - /opt/local/bin/pep-json-server
+ - /opt/local/pEp/bin/pEp-mini-json-adapter
 
-If you have `/opt/local/bin` in your PATH, then Enigmail will find it and it will override the internal server provided in the *pepmda* bundle. You may need to kill the previously started server.
+The binary is installed under /opt/local/bin (i.e. ${prefix}/bin), which is usually NOT on PATH, thus the mini adapter
+lookup sequence will NOT find this binary by default.
 
 To run the JSON server in a terminal and observe the debug output, start it as follows:
 
-    /opt/local/bin/pep-json-server -l stderr -d1
+    /opt/local/pEp/bin/pEp-mini-json-adapter -l stderr -d1
  
 ### Uninstall
 
 Uninstall the JSON server and its dependencies using MacPorts:
 
-    sudo port uninstall pep-adapter-enigmail libpep-engine-enigmail libpep-etpan py-yml2
+    sudo port uninstall pep-adapter-thunderbird libpep-adapter libpep-adapter-webserver libpep-engine-thunderbird libpep-etpan py-yml2
 
 And finally you may want to remove the repository URL from `${prefix}/etc/macports/sources.conf`.
 
@@ -54,4 +55,3 @@ This repository is **not yet receiving** regular updates.
 ### Support
 
 No public support for this MacPorts is offered, yet.
-General support [for Enigmail](http://enigmail.net) is available.
