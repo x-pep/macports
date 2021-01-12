@@ -4,8 +4,8 @@
 PortSystem          1.0
 PortGroup           python 1.0
 
-name                py-yml2
-version             5.11
+name                py38-yml2
+version             2.6.3
 categories          python
 categories-append   devel
 platforms           darwin
@@ -17,19 +17,21 @@ homepage            https://fdik.org/yml/toolchain
 
 master_sites        https://pep.foundation/dev/repos/yml2/archive/
 
-distfiles           bd6f5809cc81.tar.bz2
+distfiles           ${version}.tar.bz2
 
-checksums           rmd160 9ead9af680a1e2283185f52950ac2d8b3e1f057a \
-                    sha256 6250bba9465acf2220f06c07836496d2596a13b7493debee555713e6b05725c2
+checksums           rmd160  69de1acbfaef08c99c291d8bb0b36960d4e9855d \
+                    sha256  4c61dccdda966fe63082712a35e615299bc2a5bc7be56070da6ff92db7895255 \
+                    size    55750
 
-python.versions     27
+# python.versions     35 36 37 38 39
 
 extract.suffix      .tar.gz
 extract.post_args   | tar --strip-components 1 -xf -
 worksrcdir          .
 
-if {$subport ne $name} {
-depends_build       port:py${python.version}-lxml \
-					port:py${python.version}-setuptools \
-					port:libxml2
-}
+# if {$subport ne $name} {
+# depends_build       port:py${python.version}-lxml \
+# }
+
+#depends_build       port:py${python.version}-lxml
+

@@ -5,60 +5,62 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                libpep-engine-enigmail
-version             1.0.101
+version             2.1.10
 categories          mail
 platforms           darwin
 license             GPL-2+
 maintainers         x-pep cluck
-description         pEp Engine for pEp JSON Mini Adapter for Enigmail
-long_description    pEp Engine for pEp JSON Mini Adapter for Enigmail
+description         pEp Engine for pEp JSON Mini Adapter for Thunderbird
+long_description    pEp Engine for pEp JSON Mini Adapter for Thunderbird
 homepage            https://pep.software/
 
 master_sites        https://pep.foundation/dev/repos/pEpEngine/archive/
 
-distfiles           f344cad791f26d1c7544a219bf31e94079accbee.tar.gz
+distfiles           Release_${version}.tar.gz
 
-checksums           rmd160 ac8568fc9621a64392733a14776f90315520d772 \
-                    sha256 4dc2cd51565a5856643866c60387802a96764bde21a68618f8ef10be7aeaadba
+checksums           rmd160 684fe983e0a7ecea975c46884e9f401ab6d5d690 \
+                    sha256 dbaf0230e027e0fadb9735f0e32e7c651d203d8748052917239eca4a6500ce37 \
+                    size 8208939
 
 extract.suffix      .tar.gz
 extract.post_args   | tar --strip-components 1 -xf -
 worksrcdir          .
 
-depends_build       port:gnupg2 \
-                    port:gpgme \
-                    port:libiconv \
+depends_build       port:libiconv \
                     port:asn1c \
                     port:libpep-etpan \
-                    port:py-yml2 \
-                    port:py${python.version}-setuptools \
-                    port:py${python.version}-lxml \
-                    port:libxml2
+                    port:py38-yml2 \
+                    port:sequoia-pgp
 
-depends_lib         port:libiconv
+depends_lib         port:libiconv \
+                    port:sequoia-pgp
 
 use_configure       no
 
-set yml2proc_cmd    ${frameworks_dir}/Python.framework/Versions/${python.branch}/bin/yml2proc
-set yml2_path       ${frameworks_dir}/Python.framework/Versions/${python.branch}/lib/python${python.branch}/site-packages/yml2
+set yml2proc_cmd    ${prefix}/bin/yml2proc
+# set yml2_path       /opt/local/Library/Frameworks/Python.framework/Versions/${yml2_pyver}/lib/python${yml2_pyver}/site-packages/yml2
 
 build.type          default
 build.cmd           make
 build.target        all
 build.target-append db
-build.args          PREFIX=${prefix} \"SYSTEM_DB=${prefix}/share/pEp/system.db\" \
-					\"YML2_PATH=${yml2_path}\" \
-					\"YML2_PROC=LC_ALL=en_US.UTF-8 '${yml2proc_cmd}'" \
-					LIBGPGME=libgpgme.11.dylib GPG_CMD=gpg \
-					ASN1C=${prefix}/bin/asn1c \
-					\"ETPAN_LIB=-L${prefix}/pep/lib\" \"ETPAN_INC=-I${prefix}/pep/include\"
+					# \"YML2_PATH=${yml2_path}\" \
+					# \"YML2_PROC=LC_ALL=en_US.UTF-8 '${yml2proc_cmd}'" \
 
-pre-destroot       {
-     system "/usr/bin/install_name_tool -id \
-               '${prefix}/lib/libpEpEngine.dylib' \
-               '${worksrcpath}/src/libpEpEngine.dylib'"
-	xinstall -d ${destroot}${prefix}/share/pEp
-	xinstall -m 0644 ${worksrcpath}/db/system.db ${destroot}${prefix}/share/pEp/system.db
+pre-build {
+                    system "echo '# local.conf' >${worksrcpath}/local.conf"
+                    system "echo YML2_PROC=\"LC_ALL=en_US.UTF-8 '${yml2proc_cmd}'\" >>${worksrcpath}/local.conf"
+}
+build.args          PREFIX=${prefix}/pEp \"SYSTEM_DB=${prefix}/pEp/share/pEp/system.db\" \
+					ASN1C=${prefix}/bin/asn1c \
+					\"ETPAN_LIB=-L${prefix}/pEp/lib\" \"ETPAN_INC=-I${prefix}/pEp/include\"
+
+pre-destroot {
+                    system "/usr/bin/install_name_tool -id \
+                        '${prefix}/lib/libpEpEngine.dylib' \
+                        '${worksrcpath}/src/libpEpEngine.dylib'"
+	                xinstall -d ${destroot}${prefix}/pEp/share/pEp
+	                xinstall -m 0644 ${worksrcpath}/db/system.db ${destroot}${prefix}/pEp/share/pEp/system.db
 }
 
 destroot.cmd        make

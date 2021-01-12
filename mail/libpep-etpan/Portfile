@@ -4,7 +4,7 @@
 PortSystem          1.0
 
 name                libpep-etpan
-version             1.6.1
+version             1.6.2
 categories          mail
 platforms           darwin
 license             GPL-2+
@@ -15,10 +15,9 @@ homepage            https://pep.software/
 
 master_sites        https://github.com/fdik/libetpan/archive/
 
-distfiles           af2aad552dd0ecc6a943f78e5c77dc03ebbc0028.tar.gz
+distfiles           0b80c39dd1504462ba3a39dc53db7c960c3a63f3.tar.gz
 
-checksums           rmd160 b4b3b1b06db3bf33e69895595b64f81632b3effc \
-                    sha256 8bf56f8ca41518b7db5d80fca358e48ea889981255369beb222167aa1ab200a0
+checksums           sha256 e932ff16ca8a80f4a511249a7980e621e7ee84dcd3848e2b64f25320852d05f7
 
 extract.suffix      .tar.gz
 extract.post_args   | tar --strip-components 1 -xf -
@@ -32,9 +31,9 @@ depends_lib         port:libiconv
 
 configure.cmd       ${worksrcdir}/autogen.sh
 
-configure.pre_args  --prefix=${prefix}/pep \
+configure.pre_args  --prefix=${prefix}/pEp \
                     --bindir=${prefix}/bin --sbindir=${prefix}/sbin
-configure.args      --program-prefix=libpep- \
-                    --datarootdir=${prefix}/pep/share
+configure.args      --program-prefix=libpEp- \
+                    --datarootdir=${prefix}/pEp/share
 
 destroot.violate_mtree yes
