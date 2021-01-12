@@ -1,0 +1,56 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+#     vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                libpep-adapter-webserver
+
+version             2.1.0-RC7
+revision            2
+
+categories          mail
+platforms           darwin
+license             GPL-2+
+maintainers         x-pep cluck
+description         pEp Engine for pEp JSON Mini Adapter for Thunderbird
+long_description    pEp Engine for pEp JSON Mini Adapter for Thunderbird
+homepage            https://pep.software/
+
+master_sites        https://gitea.pep.foundation/fdik/webserver/archive/
+
+distfiles           Release_${version}.tar.gz
+
+checksums           rmd160  90dac7e1c40e6d5311d8bbe2a7513285849be255 \
+                    sha256  292ba114a20e172e3e63d60c53a224fb68565a83dc3ea4728c130ca33e80ca41 \
+                    size    19110
+
+extract.suffix      .tar.gz
+extract.post_args   | tar --strip-components 1 -xf -
+worksrcdir          .
+
+depends_build       port:boost
+
+depends_lib         port:boost
+
+use_configure       no
+
+build.type          default
+build.cmd           make
+build.target        all
+
+pre-build {
+                    system "echo '# local.conf' >${worksrcpath}/local.conf"
+                    system "echo PREFIX=${prefix}/pEp >>${worksrcpath}/local.conf"
+}
+
+pre-destroot {
+                    system "mkdir -p '${destroot}${prefix}/pEp/lib'"
+}
+
+destroot.cmd        make
+destroot.target     install
+destroot.pre_args   ${destroot.target}
+destroot.args       PREFIX=${destroot}${prefix}/pEp
+destroot.post_args  ""
+

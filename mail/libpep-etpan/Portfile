@@ -5,6 +5,8 @@ PortSystem          1.0
 
 name                libpep-etpan
 version             1.6.2
+revision            5
+
 categories          mail
 platforms           darwin
 license             GPL-2+
@@ -37,3 +39,4 @@ configure.args      --program-prefix=libpEp- \
                     --datarootdir=${prefix}/pEp/share
 
 destroot.violate_mtree yes
+

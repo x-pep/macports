@@ -4,6 +4,8 @@ PortSystem          1.0
 
 name                sequoia-pgp
 version             1.0.0
+revision            0
+
 categories          security
 maintainers         {jann @roederja} openmaintainer
 license             GPL-3+
@@ -35,6 +37,16 @@ depends_lib         port:capnproto \
                     port:sqlite3 \
                     path:lib/libssl.dylib:openssl
 
+pre-destroot {
+                    system "/usr/bin/install_name_tool -id \
+                        '${prefix}/lib/libsequoia_openpgp_ffi.dylib' \
+                        '${worksrcpath}/sequoia-v${version}/target/release/deps/libsequoia_openpgp_ffi.dylib'"
+                    system "/usr/bin/install_name_tool -id \
+                        '${prefix}/lib/libsequoia_ffi.dylib' \
+                        '${worksrcpath}/sequoia-v${version}/target/release/deps/libsequoia_ffi.dylib'"
+}
+
 livecheck.type      regex
 livecheck.url       https://gitlab.com/sequoia-pgp/sequoia/-/tags
 livecheck.regex     v(\\d+\\.\\d+\\.\\d+)
+

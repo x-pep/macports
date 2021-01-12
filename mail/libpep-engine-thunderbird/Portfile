@@ -4,8 +4,12 @@
 PortSystem          1.0
 PortGroup           python 1.0
 
-name                libpep-engine-enigmail
+name                libpep-engine-thunderbird
+
+# version             2.1.6
 version             2.1.10
+revision            3
+
 categories          mail
 platforms           darwin
 license             GPL-2+
@@ -18,18 +22,25 @@ master_sites        https://pep.foundation/dev/repos/pEpEngine/archive/
 
 distfiles           Release_${version}.tar.gz
 
+# 2.1.10:
 checksums           rmd160 684fe983e0a7ecea975c46884e9f401ab6d5d690 \
                     sha256 dbaf0230e027e0fadb9735f0e32e7c651d203d8748052917239eca4a6500ce37 \
                     size 8208939
+# 2.1.6:
+# checksums         rmd160  e26dd3a0644a5b4207b001498e3a12a6e18982a3 \
+#                   sha256  652669e6a0c0b67f3f658a07250ca3d7717f33995d027b6a5aea555329e5cc42 \
+#                   size    8207588
 
 extract.suffix      .tar.gz
 extract.post_args   | tar --strip-components 1 -xf -
 worksrcdir          .
 
+set yml2_pyver      38
+
 depends_build       port:libiconv \
                     port:asn1c \
                     port:libpep-etpan \
-                    port:py38-yml2 \
+                    port:py${yml2_pyver}-yml2 \
                     port:sequoia-pgp
 
 depends_lib         port:libiconv \
@@ -37,27 +48,32 @@ depends_lib         port:libiconv \
 
 use_configure       no
 
-set yml2proc_cmd    ${prefix}/bin/yml2proc
-# set yml2_path       /opt/local/Library/Frameworks/Python.framework/Versions/${yml2_pyver}/lib/python${yml2_pyver}/site-packages/yml2
+set python_ver_dot  [join [split ${yml2_pyver} {}] "."]
+set yml2proc_cmd    ${prefix}/bin/yml2proc-${python_ver_dot}
 
 build.type          default
 build.cmd           make
 build.target        all
 build.target-append db
-					# \"YML2_PATH=${yml2_path}\" \
-					# \"YML2_PROC=LC_ALL=en_US.UTF-8 '${yml2proc_cmd}'" \
 
 pre-build {
                     system "echo '# local.conf' >${worksrcpath}/local.conf"
-                    system "echo YML2_PROC=\"LC_ALL=en_US.UTF-8 '${yml2proc_cmd}'\" >>${worksrcpath}/local.conf"
+                    system "echo OPENPGP=SEQUOIA >>${worksrcpath}/local.conf"
+                    system "echo PREFIX=${prefix}/pEp >>${worksrcpath}/local.conf"
+                    system "echo YML2_PROC=LC_ALL=en_US.UTF-8 '${yml2proc_cmd}' >>${worksrcpath}/local.conf"
+                    system "echo PER_MACHINE_DIRECTORY=${prefix}/pEp/share/pEp >>${worksrcpath}/local.conf"
+
+                    # TODO: pgp_cert_merge was renamed to pgp_cert_merge_public in src/pgp_sequoia.c
+                    system "sed -i.bak 's/cert = pgp_cert_merge/cert = pgp_cert_merge_public/' '${worksrcpath}/src/pgp_sequoia.c'"
 }
-build.args          PREFIX=${prefix}/pEp \"SYSTEM_DB=${prefix}/pEp/share/pEp/system.db\" \
+
+build.args          \"SYSTEM_DB=${prefix}/pEp/share/pEp/system.db\" \
 					ASN1C=${prefix}/bin/asn1c \
 					\"ETPAN_LIB=-L${prefix}/pEp/lib\" \"ETPAN_INC=-I${prefix}/pEp/include\"
 
 pre-destroot {
                     system "/usr/bin/install_name_tool -id \
-                        '${prefix}/lib/libpEpEngine.dylib' \
+                        '${prefix}/pEp/lib/libpEpEngine.dylib' \
                         '${worksrcpath}/src/libpEpEngine.dylib'"
 	                xinstall -d ${destroot}${prefix}/pEp/share/pEp
 	                xinstall -m 0644 ${worksrcpath}/db/system.db ${destroot}${prefix}/pEp/share/pEp/system.db
@@ -66,6 +82,6 @@ pre-destroot {
 destroot.cmd        make
 destroot.target     install
 destroot.pre_args   ${destroot.target}
-destroot.args       PREFIX=${destroot}${prefix}
+destroot.args       PREFIX=${destroot}${prefix}/pEp
 destroot.post_args  ""
 

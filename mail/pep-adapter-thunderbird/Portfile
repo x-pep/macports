@@ -1,0 +1,82 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+#     vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                pep-adapter-thunderbird
+
+version             2.1.0-RC15
+revision            2
+
+categories          mail
+platforms           darwin
+license             GPL-2+
+maintainers         x-pep cluck
+description         pEp Engine for pEp JSON Mini Adapter for Thunderbird
+long_description    pEp Engine for pEp JSON Mini Adapter for Thunderbird
+homepage            https://pep.software/
+
+master_sites        https://pep.foundation/dev/repos/pEpJSONServerAdapter/archive
+
+patch_sites         https://gitea.pep.foundation/claudio/pEp-dist-patches/raw/branch/master/json/
+
+distfiles           Release_${version}.tar.gz
+
+checksums           0000-no-static-build.patch \
+                        rmd160  e3ff06a6628f2961bb4d77a23cdfede2c6094e98 \
+                        sha256  708b1845b41ebc54d07c98c41c417c03fb99442e74e8db997f7467dd92237c22 \
+                        size    1261 \
+                    Release_2.1.0-RC15.tar.gz \
+                        rmd160  30ee63a34cb6d74fc2f9a86f5789a80c283f16cd \
+                        sha256  aa04dbd9e5c14ebb740987ce3a13c68707ee6c84948b7ae5aefef56b7a2385d9 \
+                        size    172696
+
+extract.suffix      .tar.gz
+extract.post_args   | tar --strip-components 1 -xf -
+worksrcdir          .
+
+depends_build       port:boost \
+                    port:libpep-engine-thunderbird \
+                    port:libpep-adapter-webserver \
+                    port:libpep-adapter \
+                    port:gtest
+
+depends_lib         port:libpep-engine-thunderbird \
+                    port:libpep-adapter
+
+use_configure       no
+
+patch.pre_args      -p1
+patchfiles          0000-no-static-build.patch
+
+build.type          default
+build.cmd           make -C server
+build.target        libjson-adapter.a pEp-mini-json-adapter
+build.args          PREFIX=${prefix} \
+                         \"HTML_DIRECTORY=${prefix}/share/pEp/html\" \
+                         \"GTEST_DIR=${prefix}/src/googletest\" \
+                         \"GTEST_INC=${prefix}/src/googletest/include\" \
+                         \"ENGINE_LIB=-L${prefix}/pEp/lib\" \"ENGINE_INC=-I${prefix}/pEp/include\" \
+                         \"EVENT_LIB=-L${prefix}/lib\" \"EVENT_INC=-I${prefix}/include\" \
+                         \"PEP_WEBSERVER=${prefix}/pEp/lib\" \
+                         \"PEP_INCLUDE=${prefix}/pEp/include\" \
+                         \"BOOST_INCLUDE_PATH=${prefix}/lib\" \
+                         \"LDFLAGS=-L ${prefix}/pEp/lib -Wl,-rpath,${prefix}/pEp/lib -L ${prefix}/lib -Wl,-rpath,${prefix}/lib\"
+
+destroot.cmd        make -C server
+destroot.target     install
+destroot.pre_args   ${destroot.target}
+destroot.args       PREFIX=${destroot}${prefix} \
+                         \"HTML_DIRECTORY=${destroot}${prefix}/share/pEp/html\" \
+                         \"GTEST_DIR=${prefix}/src/googletest\" \
+                         \"GTEST_INC=${prefix}/src/googletest/include\" \
+                         \"ENGINE_LIB=-L${prefix}/pEp/lib\" \"ENGINE_INC=-I${prefix}/pEp/include\" \
+                         \"EVENT_LIB=-L${prefix}/lib\" \"EVENT_INC=-I${prefix}/include\"
+post-destroot {
+                    system "mkdir -p '${destroot}${prefix}/pEp/bin'"
+                    system "install '${worksrcpath}/server/pEp-mini-json-adapter' '${destroot}${prefix}/pEp/bin/pEp-mini-json-adapter'"
+}
+
+destroot.post_args  ""
+

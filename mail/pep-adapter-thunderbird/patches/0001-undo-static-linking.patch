@@ -1,0 +1,25 @@
+--- Makefile.static	2021-01-12 15:55:17.000000000 +0100
++++ Makefile	2021-01-12 15:55:56.000000000 +0100
+@@ -84,22 +84,6 @@
+ 	$(CXX) $(LDFLAGS) -liconv \
+ 		-lobjc -framework Foundation -framework Security \
+ 		$(PEP_WEBSERVER)/libpEpwebserver.a \
+-		$(BOOST_LIBRARY_PATH)/libboost_filesystem$(BOOST_MT).a \
+-		$(BOOST_LIBRARY_PATH)/libboost_program_options$(BOOST_MT).a \
+-		$(BOOST_LIBRARY_PATH)/libboost_system$(BOOST_MT).a \
+-		$(BOOST_LIBRARY_PATH)/libboost_thread$(BOOST_MT).a \
+-		$(BOOST_LIBRARY_PATH)/libboost_regex$(BOOST_MT).a \
+-		$(ICONV_LIBRARY_PATH)/libiconv.a \
+-		$(LIBZ_LIBRARY_PATH)/libz.a \
+-		$(SQLITE3_LIBRARY_PATH)/libsqlite3.a \
+-		$(GMP_LIBRARY_PATH)/libgmp.a \
+-		$(NETTLE)/libnettle.a $(NETTLE)/libhogweed.a \
+-		$(SEQUOIA_PGP)/libsequoia_ffi.a \
+-		$(SEQUOIA_PGP)/libsequoia_openpgp_ffi.a \
+-		$(LIBETPAN_FDIK)/libetpan.a \
+-		$(PEP_ENGINE)/libpEpEngine.a \
+-		$(ASN1_PATH)/libasn1.a \
+-		$(PEP_ADAPTER_LIBRARY)/libpEpAdapter.a \
+ 		$(MA_OBJECTS) $(SPIRIT_OBJECTS) $(LIB_TARGET) -o "$@"
+
+ %.o: %.cc

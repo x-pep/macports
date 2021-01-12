@@ -4,7 +4,10 @@
 PortSystem          1.0
 
 name                libpep-adapter
-version             1.0.102
+
+version             2.1.3
+revision            2
+
 categories          mail
 platforms           darwin
 license             GPL-2+
@@ -15,42 +18,33 @@ homepage            https://pep.software/
 
 master_sites        https://pep.foundation/dev/repos/libpEpAdapter/archive/
 
-distfiles           0f0ef635bff9.tar.bz2
+distfiles           Release_${version}.tar.gz
 
-checksums           rmd160 c906a74e0aa2d70e99cc3ced534623673e55c0d7 \
-                    sha256 44f941e12fd6ffe15404c86a25caf8883a3e48fa3827b21846d42fd33204bdb7
+checksums           rmd160  e9dbe58c985a4acb2ffa18add00ff4d8bba5de51 \
+                    sha256  3e2ef05cb9a62bc9e4ddf094c81d7c6c082680e1094f68ba3b28ea045542a00d \
+                    size    35234
 
 extract.suffix      .tar.gz
 extract.post_args   | tar --strip-components 1 -xf -
 worksrcdir          .
 
-depends_build       port:libpep-engine-enigmail
-
-#                     port:autoconf \
-#                     port:libtool
-
-# depends_lib         port:libiconv
+depends_build       port:libpep-engine-thunderbird
 
 use_configure       no
-#
-# configure.cmd       ${worksrcdir}/autogen.sh
-# configure.pre_args  --prefix=${prefix}/pep \
-#                     --bindir=${prefix}/bin --sbindir=${prefix}/sbin
-# configure.args      --program-prefix=libpep- \
-#                     --datarootdir=${prefix}/pep/share
 
 build.type          default
 build.cmd           make
 build.target        all
-build.args          PREFIX=${prefix} \
-					\"ENGINE_LIB=-L${prefix}/lib\" \"ENGINE_INC=-I${prefix}/include\"
+build.args          PREFIX=${prefix}/pEp \
+					\"ENGINE_LIB=-L${prefix}/pEp/lib\" \"ENGINE_INC=-I${prefix}/pEp/include\" \
+                    \"LDFLAGS=-Wl,-rpath,${prefix}/pEp/lib -Wl,-rpath,${prefix}/lib\"
+
 
 destroot.cmd        make
 destroot.target     install
 destroot.pre_args   ${destroot.target}
-destroot.args       PREFIX=${destroot}${prefix} \
-                         \"ENGINE_LIB=-L${prefix}/lib\" \"ENGINE_INC=-I${prefix}/include\"
+destroot.args       PREFIX=${destroot}${prefix}/pEp \
+                    \"ENGINE_LIB=-L${prefix}/pEp/lib\" \"ENGINE_INC=-I${prefix}/pEp/include\"
 
 destroot.post_args  ""
 
-# destroot.violate_mtree yes
